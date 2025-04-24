@@ -1,9 +1,16 @@
 import React from 'react';
 import { FilterQuery } from '../../types/filterQuery';
+import { FilterStatus } from '../../types/filterStatus';
 
 interface Props {
   filterQuery: FilterQuery;
   setFilterQuery: (v: FilterQuery) => void;
+}
+
+function convertStringToStatus(value: string): FilterStatus | undefined {
+  return (Object.values(FilterStatus) as Array<string>).includes(value)
+    ? (value as FilterStatus)
+    : undefined;
 }
 
 export const TodoFilter: React.FC<Props> = ({
@@ -27,7 +34,9 @@ export const TodoFilter: React.FC<Props> = ({
             data-cy="statusSelect"
             value={filterQuery.status}
             onChange={event => {
-              handleFieldChange({ status: event.target.value });
+              handleFieldChange({
+                status: convertStringToStatus(event.target.value),
+              });
             }}
           >
             <option value="all">All</option>

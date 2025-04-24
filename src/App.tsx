@@ -46,7 +46,7 @@ export const App: React.FC = () => {
       setFilteredTodos(getFilteredTodo(serverTodos, filterQuery));
       setIsLoading(false);
     });
-  });
+  }, []);
 
   useEffect(() => {
     setFilteredTodos(getFilteredTodo(todos, filterQuery));
