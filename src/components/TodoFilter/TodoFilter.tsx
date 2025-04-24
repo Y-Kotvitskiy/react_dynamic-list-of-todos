@@ -7,10 +7,10 @@ interface Props {
   setFilterQuery: (v: FilterQuery) => void;
 }
 
-function convertStringToStatus(value: string): FilterStatus | undefined {
+function convertStringToStatus(value: string): FilterStatus {
   return (Object.values(FilterStatus) as Array<string>).includes(value)
     ? (value as FilterStatus)
-    : undefined;
+    : FilterStatus.All;
 }
 
 export const TodoFilter: React.FC<Props> = ({

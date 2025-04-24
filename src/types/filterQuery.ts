@@ -1,4 +1,6 @@
+import { FilterStatus } from './filterStatus';
+
 export interface FilterQuery {
-  status: string;
+  status: FilterStatus;
   search: string;
 }
