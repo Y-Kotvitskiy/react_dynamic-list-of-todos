@@ -8,7 +8,7 @@ const defaultValues: FilterQuery = {
 };
 
 interface Props {
-  onFilter: (v: FilterQuery) => null;
+  onFilter: (v: FilterQuery) => void;
 }
 
 export const TodoFilter: React.FC<Props> = ({ onFilter }) => {

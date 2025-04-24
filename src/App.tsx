@@ -12,22 +12,18 @@ import { Todo } from './types/Todo';
 import { FilterQuery } from './types/filterQuery';
 import { FilterStatus } from './types/filterStatus';
 
-const defaultQuery: FilterQuery = {
-  status: 'all',
-  search: '',
-};
-
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [todos, setTodos] = React.useState<Todo[]>([]);
   const [filteredTodos, setFilteredTodos] = React.useState<Todo[]>([]);
+  const [selectedTodo, setSelectedTodo] = React.useState<Todo | null>(null);
 
   useEffect(() => {
     getTodos().then(serverTodos => {
       setTodos(serverTodos);
       setFilteredTodos(serverTodos);
+      setIsLoading(false);
     });
-    setIsLoading(false);
   }, []);
 
   const onFilter = (query: FilterQuery) => {
@@ -48,6 +44,14 @@ export const App: React.FC = () => {
     );
   };
 
+  const handleSelectTodo = (todo: Todo) => {
+    setSelectedTodo(todo);
+  };
+
+  const handleModalClose = () => {
+    setSelectedTodo(null);
+  };
+
   return (
     <>
       <div className="section">
@@ -56,17 +60,27 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter onFilter={onFilter} query={defaultQuery} />
+              <TodoFilter onFilter={onFilter} />
             </div>
 
             <div className="block">
-              {isLoading ? <Loader /> : <TodoList todos={filteredTodos} />}
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <TodoList
+                  todos={filteredTodos}
+                  selectedTodo={selectedTodo}
+                  setSelectedTodo={handleSelectTodo}
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {false ? <TodoModal /> : null}
+      {selectedTodo ? (
+        <TodoModal {...{ selectedTodo, onClose: handleModalClose }} />
+      ) : null}
     </>
   );
 };
